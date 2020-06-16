@@ -40,14 +40,15 @@ $getVarGroupsUrl = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPR
 Write-Host "URL: $getVarGroupsUrl"
 
 $response = Invoke-RestMethod -Uri $getVarGroupsUrl -Method Get -Headers $headers
-Write-Host "Available variable groups: $($response[0].value.name -Join ', ')"
+$variableGroups = $response.value
+Write-Host "Available variable groups: $($variableGroups.name -Join ', ')"
 
-$variableGroup = $response[0].value | ? { $_.name -eq $VariableGroupName }
+$variableGroup = $variableGroups | ? { $_.name -eq $VariableGroupName }
 if (!$variableGroup)
 {
     throw "Unable to get variable group $VariableGroupName"
 }
-Write-Host "variable group: $($variableGroup | Out-String)"
+Write-Host "variable group: $($variableGroup.name | Out-String)"
 #endregion
 
 # Edit variable
@@ -58,5 +59,6 @@ $json = ConvertTo-Json -InputObject $variableGroup -Depth 10
 $editVariableUrl = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/distributedtask/variablegroups/$($variableGroup.id)?api-version=5.1-preview.1"
 Write-Host "URL: $editVariableUrl"
 
-$pipeline = Invoke-RestMethod -Uri $editVariableUrl -Method Put -Body $json -ContentType "application/json" -Headers $headers
-Write-Host "New Variable Value: $($pipeline | Out-String)"
+$response = Invoke-RestMethod -Uri $editVariableUrl -Method Put -Body $json -ContentType "application/json" -Headers $headers
+#$response
+#Write-Host "New Variable Value: $($pipeline.variables.$VariableName.value)"
