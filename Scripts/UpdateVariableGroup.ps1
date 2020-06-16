@@ -5,12 +5,12 @@
     it will be used to authenticate with the DevOps site. The token must have
     at least read&create permissions for variable groups.
 
-    If a PAT is not provided (recommended), the script will authenticate using the OAuth access token,
-    in order to be successful, two things need to be configured:
-    1- The agent phase must have the option 'Allow scripts to access the OAuth token' enabled.
+    If a PAT is not provided (recommended), the script will authenticate using the OAuth access token.
+    In order for it to work, two things need to be configured:
+    1- The agent job must have the option 'Allow scripts to access the OAuth token' enabled.
     2- The variable group must grant the Administrator role to the user
-    'Project Collection Build Service (xxxx)', where xxxx is the project name. You can change
-    the role by going to Security under the variable group you want to edit.
+       project's build service. You can change/set the role by going to 'Security' in the variable 
+       group you want to edit.
 
     More info at https://stackoverflow.com/questions/52986076/having-no-permission-for-updating-variable-group-via-azure-devops-rest-api-from
 #>
